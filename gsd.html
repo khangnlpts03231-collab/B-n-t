@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bất Động Sản Xanh - Giao diện hiện đại</title>
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <style>
+        /* --- 1. CÀI ĐẶT CHUNG --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0fdf4; /* Nền xanh lá cực nhạt */
+            color: #333;
+        }
+
+        /* --- 2. THANH TRÊN CÙNG (HEADER) --- */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #166534; /* Xanh lá đậm */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px 0 70px; /* Chừa chỗ cho nút menu */
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            width: 40%;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 5px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .search-box i {
+            color: #166534;
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
+        /* --- 3. THANH BÊN TRÁI (SIDEBAR) --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px; /* Mặc định ẩn qua trái */
+            width: 260px;
+            height: 100%;
+            background-color: white;
+            z-index: 200;
+            transition: all 0.4s ease; /* Hiệu ứng lướt mượt */
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            padding-top: 20px;
+        }
+
+        .sidebar.active {
+            left: 0; /* Hiện ra khi có class active */
+        }
+
+        /* Nút menu mở/đóng */
+        .btn-menu {
+            position: fixed;
+            top: 18px;
+            left: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            z-index: 300;
+        }
+
+        .btn-close {
+            text-align: right;
+            padding: 0 20px;
+            font-size: 35px;
+            cursor: pointer;
+            color: #166534;
+        }
+
+        /* Danh sách Menu */
+        .menu-list {
+            margin-top: 20px;
+            list-style: none;
+        }
+
+        .menu-list a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #166534;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease; /* Hiệu ứng di chuyển */
+        }
+
+        .menu-list a i {
+            margin-right: 15px;
+            font-size: 22px;
+        }
+
+        /* Hiệu ứng khi rê chuột vào menu */
+        .menu-list a:hover {
+            background-color: #166534;
+            color: white;
+            padding-left: 40px; /* Hiệu ứng di chuyển sang phải */
+        }
+
+        /* --- 4. NỘI DUNG CHÍNH --- */
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            color: #166534;
+            border-left: 6px solid #166534;
+            padding-left: 15px;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        /* Lưới Bất Động Sản */
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Thẻ Bất Động Sản */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px); /* Nhấc khung lên */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-info {
+            padding: 20px;
+        }
+
+        .card-title {
+            color: #15803d;
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-detail {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .price {
+            color: #dc2626; /* Màu đỏ cho giá */
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+            display: block;
+        }
+
+        .btn-call {
+            display: block;
+            width: 100%;
+            background-color: #166534;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-call:hover {
+            background-color: #14532d;
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="btn-menu" onclick="toggleSidebar()">
+        <i class='bx bx-menu'></i>
+    </div>
+
+    <header class="header">
+        <div class="logo">BĐS XANH ĐÔNG Á</div>
+        <div class="search-box">
+            <i class='bx bx-search'></i>
+            <input type="text" placeholder="Tìm kiếm khu vực, giá, diện tích...">
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="btn-close" onclick="toggleSidebar()">×</div>
+        <div class="menu-list">
+            <a href="#"><i class='bx bxs-home'></i> TRANG CHỦ</a>
+            <a href="#"><i class='bx bxs-leaf'></i> DỊCH VỤ</a>
+            <a href="#"><i class='bx bxs-phone-call'></i> LIÊN HỆ</a>
+            <a href="#"><i class='bx bxs-buildings'></i> DỰ ÁN MỚI</a>
+            <a href="#"><i class='bx bxs-info-circle'></i> GIỚI THIỆU</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <h2 class="section-title">Bất Động Sản Nổi Bật</h2>
+
+        <div class="property-grid">
+            
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Đất đầu tư sinh lời</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Xã Trung An, Củ Chi</p>
+                    <p class="card-detail"><b>Diện tích:</b> 300 m²</p>
+                    <span class="price">💰 Giá: 3.6 tỷ</span>
+                    <p class="card-detail">Khu vực phát triển mạnh, tiềm năng cao.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Nhà phố sân vườn</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Hóc Môn, TP.HCM</p>
+                    <p class="card-detail"><b>Diện tích:</b> 120 m²</p>
+                    <span class="price">💰 Giá: 4.2 tỷ</span>
+                    <p class="card-detail">Sổ hồng riêng, khu dân cư an ninh.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1582408921715-18e7806365c1?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Lô đất thổ cư đẹp</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Bình Mỹ, Củ Chi</p>
+                    <p class="card-detail"><b>Diện tích:</b> 500 m²</p>
+                    <span class="price">💰 Giá: 5.5 tỷ</span>
+                    <p class="card-detail">Mặt tiền đường lớn, thích hợp biệt thự.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Đất vườn nghỉ dưỡng</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Cần Giuộc, Long An</p>
+                    <p class="card-detail"><b>Diện tích:</b> 1000 m²</p>
+                    <span class="price">💰 Giá: 2.1 tỷ</span>
+                    <p class="card-detail">View sông thoáng mát, không khí trong lành.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Căn hộ chung cư cao cấp</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Quận 2, TP.HCM</p>
+                    <p class="card-detail"><b>Diện tích:</b> 85 m²</p>
+                    <span class="price">💰 Giá: 6.8 tỷ</span>
+                    <p class="card-detail">Nội thất cao cấp, view Landmark 81.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=600" alt="BĐS">
+                <div class="card-info">
+                    <h3 class="card-title">Nhà cấp 4 mặt tiền</h3>
+                    <p class="card-detail"><b>Địa chỉ:</b> Đức Hòa, Long An</p>
+                    <p class="card-detail"><b>Diện tích:</b> 150 m²</p>
+                    <span class="price">💰 Giá: 3.2 tỷ</span>
+                    <p class="card-detail">Thận tiện kinh doanh buôn bán đa ngành.</p>
+                    <a href="#" class="btn-call">📞 Gọi ngay</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Hàm đóng mở Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Đóng sidebar khi click ra ngoài (tùy chọn thêm để web chuyên nghiệp hơn)
+        window.onclick = function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const btnMenu = document.querySelector('.btn-menu');
+            if (event.target != sidebar && event.target != btnMenu && !sidebar.contains(event.target) && !btnMenu.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
